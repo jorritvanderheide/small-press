@@ -14,7 +14,7 @@ pages; everything but the pages is the library's
 | `pages_test.go` | The pages' tests, on an in-memory site. |
 | `web/` | Templates and static files, embedded with `embed.FS`. Everything in `web/static/` is published, each at an address with its hash (`asset "site.css"` in a template). |
 | `content/` | Posts and pages, in the [format](architecture.md#content) every site shares. |
-| `go.mod` | The library, at the commit the site builds with. |
+| `go.mod` | The library, at the release the site builds with. |
 | `flake.nix`, `nix/` | `program` and `site`, which the deploy builds (`nix/package.nix`, `nix/site.nix`). |
 | `.gitignore` | `go.work` and `go.work.sum`, for working on the library and the site at once. |
 | `check.sh`, `.forgejo/` | The checks, as the library's. |
@@ -36,7 +36,7 @@ site's pages, as the deploy will build it.
    `../content` rather than `../example/content`.
 2. `go mod init codeberg.org/<owner>/<site>`, change the import of `web` in
    `main.go` and `pages_test.go` to it, then
-   `go get codeberg.org/BW20/small-press@main` and `go mod tidy`.
+   `go get codeberg.org/BW20/small-press@latest` and `go mod tidy`.
 3. In `nix/package.nix`: the program's name, and `vendorHash =
    lib.fakeHash`; `nix build .#program` then says what the hash is. In
    `nix/site.nix`, the program's name.
@@ -68,20 +68,21 @@ use (
 )
 ```
 
-Nix doesn't see it: `nix build` takes the library at the commit `go.mod`
+Nix doesn't see it: `nix build` takes the library at the release `go.mod`
 pins.
 
-## Moving a site to a new commit of the library
+## Moving a site to a new release of the library
 
-1. Push the library's change.
-2. In the site: `GOWORK=off go get codeberg.org/BW20/small-press@main` and
+1. Release the library: its changelog's Unreleased becomes the version, and
+   the commit is pushed and tagged `v` and the version (`v0.2.0`).
+2. In the site: `GOWORK=off go get codeberg.org/BW20/small-press@v0.2.0` and
    `GOWORK=off go mod tidy`.
 3. Set `vendorHash` to what `nix build .#program` says, and run
    `./check.sh` and `nix flake check`.
 
 A change to the library that a site's pages don't compile against shows
 here, as a compile error. Each site moves when it is ready: the library
-has no stable API, and two sites may run two commits of it.
+has no stable API before 1.0.0, and two sites may run two releases of it.
 
 The host's module comes from the host's own pin of this flake. It runs each
 site's program with flags, so a change to the receiver's flags needs the

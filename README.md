@@ -61,7 +61,7 @@ For whoever works on it:
   where it ends and a site begins, the rules every site keeps to, and
   deployment.
 - [**Sites**](docs/sites.md) - What a site's repository holds, how one
-  starts, and how it moves to a new commit of the library.
+  starts, and how it moves to a new release of the library.
 - [**Publishing**](docs/publishing.md) - The receiver: how a post from
   In the Open becomes a commit.
 
@@ -73,6 +73,6 @@ The code is licensed under the [EUPL-1.2](LICENSE).
 
 This is the library of a few people's sites, public to read and reuse
 under that licence, but not a project yet: it has no stable API, and each
-site pins the commit it builds with, so a change may break a site that
+site pins the release it builds with, so a release may break a site that
 moves to it. There's no support, and issues and pull requests aren't
 taken.

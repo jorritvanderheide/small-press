@@ -59,9 +59,9 @@ somewhere, whatever the site's pages are. The receiver checks a post with
 the same `Build`, the site's pages included, so what it takes is what the
 deploy will build.
 
-The library has no stable API: there are only a few sites, and each pins
-the commit it builds with. A change that breaks a site shows when that site
-moves to it, as a compile error rather than at run time.
+The library has no stable API before 1.0.0: there are only a few sites, and
+each pins the release it builds with. A release that breaks a site shows when
+that site moves to it, as a compile error rather than at run time.
 
 ## Content
 

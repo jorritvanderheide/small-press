@@ -1,10 +1,11 @@
 # Changelog
 
-What changed in the library, newest first. There are no releases: each
-site pins the commit it builds with, so changes collect under Unreleased,
-and the commit is the version.
+What changed in the library, newest first. Each release is a tag, `v` and the
+version, which a site pins in its `go.mod`; changes collect under Unreleased
+until the next one. Before 1.0.0 there is no stable API: a release may break
+a site's pages, and says so here.
 
-## Unreleased
+## 0.1.0
 
 - The BW20 blog's program, as a library: each site is a program of its
   own, with its own pages, templates and stylesheet, on top of it. Every
