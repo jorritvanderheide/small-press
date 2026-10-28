@@ -77,8 +77,10 @@ pins.
    the commit is pushed and tagged `v` and the version (`v0.2.0`).
 2. In the site: `GOWORK=off go get codeberg.org/BW20/small-press@v0.2.0` and
    `GOWORK=off go mod tidy`.
-3. Set `vendorHash` to what `nix build .#program` says, and run
-   `./check.sh` and `nix flake check`.
+3. Set `vendorHash` to `lib.fakeHash` first, then to what
+   `nix build .#program` says, and run `./check.sh` and `nix flake check`.
+   With the old hash left in place, Nix reuses the old vendor folder, which
+   fails as inconsistent vendoring rather than giving the new hash.
 
 A change to the library that a site's pages don't compile against shows
 here, as a compile error. Each site moves when it is ready: the library
