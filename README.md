@@ -72,5 +72,7 @@ For whoever works on it:
 The code is licensed under the [EUPL-1.2](LICENSE).
 
 This is the library of a few people's sites, public to read and reuse
-under that licence, but not a project: there's no support, and issues and
-pull requests aren't taken.
+under that licence, but not a project yet: it has no stable API, and each
+site pins the commit it builds with, so a change may break a site that
+moves to it. There's no support, and issues and pull requests aren't
+taken.
