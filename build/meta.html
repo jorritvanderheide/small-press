@@ -1,0 +1,9 @@
+{{/* The tags Google Scholar and Zotero read, and schema.org's BlogPosting: what every site's post says about itself the same way (cite.go, Meta). */}}<meta name="citation_title" content="{{.Post.Title}}">
+<meta name="citation_author" content="{{.Config.Author.Family}}, {{.Config.Author.Given}}">
+<meta name="citation_publication_date" content="{{.Post.Date.Format "2006/01/02"}}">
+<meta name="citation_public_url" content="{{.URL}}">
+<meta name="citation_language" content="en">
+{{with .Post.DOI}}<meta name="citation_doi" content="{{.}}">
+{{end}}
+{{range .References}}<meta name="citation_reference" content="{{.Plain}}">
+{{end}}<script type="application/ld+json">{{.JSONLD}}</script>

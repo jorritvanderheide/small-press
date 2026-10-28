@@ -1,0 +1,26 @@
+# The checks on every push to main and every pull request, on the Forgejo
+# runner on dapple (label nix): Nix through dapple's daemon, with KVM for the
+# NixOS VM test, which Codeberg's own runners lack. The runner has no git, so
+# the source comes as Codeberg's archive of the commit; without git there is
+# no commit count, so the example's build number is left out.
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: nix
+    timeout-minutes: 60
+    steps:
+      - name: Source
+        run: curl -fsSL "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/archive/$GITHUB_SHA.tar.gz" | tar -xz --strip-components=1
+
+      # gofmt, vet, the tests, staticcheck and govulncheck, as by hand.
+      - name: check.sh
+        run: nix develop -c ./check.sh
+
+      # The program, the example site, and the module's VM test.
+      - run: nix flake check -L

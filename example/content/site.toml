@@ -1,0 +1,17 @@
+# What the site says about itself: its name and address, the author every
+# post is by, the line on the home page, and the menu.
+title = 'Example'
+url = 'https://example.test'
+description = 'A site on small-press, to start a new one from.'
+
+[author]
+given = 'Ann'
+family = 'Example'
+
+[[menu]]
+name = 'log'
+link = '/log/'
+
+[[menu]]
+name = 'about'
+link = '/about/'

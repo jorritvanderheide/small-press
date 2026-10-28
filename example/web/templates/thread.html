@@ -1,0 +1,6 @@
+{{define "main"}}
+<h1>{{.Thread.Name}}</h1>
+{{with .Thread.Description}}<p class="lead">{{.}}</p>
+{{end}}{{if .Posts}}{{template "posts" .Posts}}{{else}}<p>No posts in this thread yet.</p>
+{{end}}
+{{end}}

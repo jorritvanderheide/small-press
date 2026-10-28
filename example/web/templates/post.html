@@ -1,0 +1,33 @@
+{{define "head"}}<meta property="og:type" content="article">
+<meta property="article:published_time" content="{{stamp .Post.Date}}">
+{{.Meta}}
+{{end}}
+{{define "main"}}
+<article>
+<header>
+<h1>{{.Post.Title}}</h1>
+<p class="meta"><time datetime="{{iso .Post.Date}}">{{date .Post.Date}}</time>{{if not .Post.Updated.IsZero}}, updated <time datetime="{{iso .Post.Updated}}">{{date .Post.Updated}}</time>{{end}}{{with .Post.ThreadList}}, in {{range $i, $t := .}}{{if $i}}, {{end}}<a href="{{$t.Path}}">{{$t.Name}}</a>{{end}}{{end}}</p>
+{{if .Post.Draft}}<p class="meta"><strong>A draft.</strong> Only its address leads here: it’s in none of the site’s lists, nor its feed, until it’s published.</p>
+{{end}}{{if not .Post.Withdrawn.IsZero}}<p class="notice"><strong>Withdrawn on <time datetime="{{iso .Post.Withdrawn}}">{{date .Post.Withdrawn}}</time>.</strong>{{with .Post.WithdrawnReason}} {{.}}<br>{{else}} {{end}}It’s no longer in the site’s lists or its feed. Its address stays, so links and citations to it still lead here.</p>
+{{end}}</header>
+{{.Text}}
+{{with .References}}<section aria-labelledby="references">
+<h2 id="references">References</h2>
+<ul class="references">
+{{range .}}<li id="ref-{{.Key}}">{{.Text}}{{with .URL}} <a href="{{.}}">{{.}}</a>{{end}} <a class="cited" href="/works/{{.Key}}/">Where it’s cited</a></li>
+{{end}}</ul>
+</section>
+{{end}}{{with .Post.LinkedFrom}}<section aria-labelledby="linked-from">
+<h2 id="linked-from">Linked from</h2>
+{{template "posts" .}}</section>
+{{end}}<section aria-labelledby="cite">
+<h2 id="cite">Cite this post</h2>
+<p>{{.Cite}}</p>
+<details>
+<summary>BibTeX</summary>
+<pre>{{.BibTeX}}</pre>
+</details>
+<p><a href="{{.Post.Path}}cite.bib" download>cite.bib</a></p>
+</section>
+</article>
+{{end}}

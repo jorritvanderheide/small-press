@@ -1,0 +1,11 @@
+{{define "main"}}
+<h1>{{.Site.Config.Title}}</h1>
+<p class="lead">{{.Site.Config.Description}}</p>
+{{if .Posts}}
+<h2>Newest</h2>
+{{template "posts" .Posts}}
+<p><a href="/log/">Every post, in the log</a></p>
+{{else}}
+<p>No posts yet.</p>
+{{end}}
+{{end}}

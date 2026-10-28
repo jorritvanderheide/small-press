@@ -1,0 +1,17 @@
+# The crawlers robots.txt asks to stay away, and nginx turns away with a 403
+# for those that don't ask robots.txt: one list for both (docs/architecture.md,
+# Deployment). One user agent a line.
+GPTBot
+ChatGPT-User
+CCBot
+Google-Extended
+anthropic-ai
+ClaudeBot
+Bytespider
+FacebookBot
+Omgilibot
+Diffbot
+Applebot-Extended
+PerplexityBot
+YouBot
+Cohere-ai

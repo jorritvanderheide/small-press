@@ -1,0 +1,8 @@
+{{define "posts"}}<ul class="posts">
+{{range .}}<li>
+<a href="{{.Path}}">{{.Title}}</a>
+<time datetime="{{iso .Date}}">{{season .Date}}</time>
+<p>{{.Summary}}</p>
+</li>
+{{end}}</ul>
+{{end}}

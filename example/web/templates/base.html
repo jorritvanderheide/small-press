@@ -1,0 +1,37 @@
+{{define "base"}}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{with .Title}}{{.}} · {{end}}{{.Site.Config.Title}}</title>
+<meta name="description" content="{{.Description}}">
+{{if .NoIndex}}<meta name="robots" content="noindex">
+{{else}}<link rel="canonical" href="{{abs .Path}}">
+{{end}}<link rel="stylesheet" href="{{asset "site.css"}}">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="{{.Site.Config.Title}}">
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+<meta property="og:site_name" content="{{.Site.Config.Title}}">
+<meta property="og:title" content="{{or .Title .Site.Config.Title}}">
+<meta property="og:description" content="{{.Description}}">
+<meta property="og:url" content="{{abs .Path}}">
+{{block "head" .}}<meta property="og:type" content="website">
+{{end}}</head>
+<body>
+<a class="skip" href="#main">Skip to the text</a>
+<header class="site">
+<a class="name" href="/"{{if eq .Path "/"}} aria-current="page"{{end}}>{{.Site.Config.Title}}</a>
+<nav aria-label="Menu">
+<ul>
+{{range .Site.Config.Menu}}<li><a href="{{.Link}}"{{if current .Link $.Path}} aria-current="page"{{end}}>{{.Name}}</a></li>
+{{end}}</ul>
+</nav>
+</header>
+<main id="main">
+{{template "main" .}}
+</main>
+<footer class="site">
+<p>By {{with .Site.Config.Author.ORCID}}<a rel="author" href="https://orcid.org/{{.}}">{{$.Site.Config.Author.Name}}</a>{{else}}{{.Site.Config.Author.Name}}{{end}}. Posts under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="/feed.xml">Feed</a>.{{if .Build}} Build {{.Build}}.{{end}}</p>
+</footer>
+</body>
+</html>
+{{end}}

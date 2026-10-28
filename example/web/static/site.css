@@ -1,0 +1,307 @@
+/* The site's one stylesheet, written by hand: no build step. Mobile first,
+   light and dark from the reader's own setting. */
+
+:root {
+  --paper: #fbfaf6;
+  --ink: #1f1f1c;
+  --muted: #5d5c55;
+  --line: #d9d6cc;
+  --accent: #2e6b5a;
+  --measure: 38rem;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #171716;
+    --ink: #e8e6df;
+    --muted: #a9a79e;
+    --line: #3a3934;
+    --accent: #84c7b2;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 112.5%;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.15em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skip {
+  position: absolute;
+  left: -100vw;
+}
+
+.skip:focus {
+  position: static;
+}
+
+header.site {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  align-items: baseline;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+header.site .name {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+nav a[aria-current="page"] {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin: 2.25rem 0 0.5rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin: 1.75rem 0 0.25rem;
+}
+
+.meta,
+.lead {
+  color: var(--muted);
+}
+
+.meta {
+  margin-top: 0;
+}
+
+/* What a reader has to know before the text: that it was withdrawn. */
+.notice {
+  border-left: 3px solid var(--accent);
+  padding: 0.25rem 0 0.25rem 1rem;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  /* Dithered in greys: the paper shows through the light ones. */
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+  img {
+    mix-blend-mode: normal;
+    opacity: 0.85;
+  }
+}
+
+pre,
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  overflow-x: auto;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.25rem 0.75rem 0.25rem 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--line);
+  color: var(--muted);
+}
+
+ul.posts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.posts li {
+  margin: 0 0 1.25rem;
+}
+
+ul.posts time {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+ul.posts p {
+  margin: 0.15rem 0 0;
+}
+
+ul.references {
+  padding-left: 0;
+  list-style: none;
+}
+
+ul.references li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  text-indent: -1.5rem;
+  overflow-wrap: anywhere;
+}
+
+ul.references .cited {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+ul.references li:target {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.footnotes {
+  font-size: 0.9rem;
+}
+
+details pre {
+  white-space: pre-wrap;
+}
+
+footer.site {
+  margin-top: 3rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
+/* Printed, or saved as PDF: the text, its references and how to cite it, in
+   black on white, without the menu, and each web link's address after it,
+   so a printed copy still says where its sources are. */
+@media print {
+  :root {
+    --paper: #fff;
+    --ink: #000;
+    --muted: #333;
+    --line: #999;
+    --accent: #000;
+    color-scheme: light;
+  }
+
+  html {
+    font-size: 11pt;
+  }
+
+  body {
+    max-width: none;
+    padding: 0;
+  }
+
+  .skip,
+  header.site nav,
+  details {
+    display: none;
+  }
+
+  header.site {
+    margin-bottom: 1.5rem;
+  }
+
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    overflow-wrap: anywhere;
+  }
+
+  /* "Where it’s cited" leads to another page: on paper, it leads nowhere. */
+  ul.references .cited {
+    display: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  img,
+  pre,
+  table,
+  blockquote,
+  ul.references li {
+    break-inside: avoid;
+  }
+
+  img {
+    mix-blend-mode: normal;
+    opacity: 1;
+  }
+}

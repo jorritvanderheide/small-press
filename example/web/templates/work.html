@@ -1,0 +1,7 @@
+{{define "main"}}
+<h1>A work cited here</h1>
+<p class="reference">{{.WorkText}}{{with .WorkURL}} <a href="{{.}}">{{.}}</a>{{end}}</p>
+<h2>Cited in</h2>
+{{if .Posts}}{{template "posts" .Posts}}{{else}}<p>No post up now cites it.</p>
+{{end}}
+{{end}}

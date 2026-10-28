@@ -1,0 +1,9 @@
+{{define "main"}}
+<h1>Log</h1>
+{{range .Years}}
+<h2>{{.Year}}</h2>
+{{template "posts" .Posts}}
+{{else}}
+<p>No posts yet.</p>
+{{end}}
+{{end}}
