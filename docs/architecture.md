@@ -28,7 +28,7 @@ turn a published post into a commit.
 | `micropub/` | The receiver: Micropub requests in, commits out. |
 | `example/` | A whole site on the library, for its tests and for a new site to start from: its program, pages, `web/` and `content/`. |
 | `flake.nix` | The example's two packages, `program` and `site`, and the module. |
-| `nix/` | The NixOS module, and its VM test. |
+| `nix/` | The NixOS module and its VM test (with its stand-in site, `nix/test/`), and the example's `program.nix` and `site.nix`. |
 | `docs/` | This, and the rest of the developer docs. |
 
 `content` and `site` are pure: no filesystem except through an `fs.FS` they
@@ -366,8 +366,11 @@ the site's `program` option.
 - **The fetch has the whole history**, so `revCount` is always there for
   the build number ([Time](#time)).
 - **After a deploy**, nginx reads the build's includes again, and the
-  receiver restarts with the program just built, so it checks posts by the
-  same rules as the build that will publish them.
+  receiver's socket starts and the receiver restarts with the program just
+  built, so it checks posts by the same rules as the build that will
+  publish them. Before a site's first deploy there is no program, so its
+  socket and receiver wait for one (`ConditionPathExists`) rather than fail
+  the host's switch.
 
 **nginx** serves each site's build at its `domain`, with BW20's old site's
 rules:
@@ -389,20 +392,24 @@ describes.
 
 `nix/test.nix` starts it in two VMs, without the network.
 
-- **deploy** deploys two sites, each from a repository on the VM: a first
-  commit, the build's redirect and 403, a commit that doesn't build and
-  fails once, one that builds again, and a second site beside the first,
-  as its own user. Building a real flake there would need nixpkgs and Go
+- **deploy** deploys two sites, each from a repository on the VM: nginx up
+  and no failed receiver before the first deploy, a first commit, the
+  receiver's link and socket once there is a program, the build's redirect
+  and 403, a deploy with nothing new that does nothing, a commit that
+  doesn't build and fails once, one that builds again, and a second site
+  beside the first, as its own user. Building a real flake there would need nixpkgs and Go
   without the network, so the sites in it are a stand-in (`nix/test/`) that
   writes what the real build does.
-- **site** serves the example site, built on the host, as a reader gets
+- **site** serves the example site, built outside the VM and linked where a
+  deploy would put it, as a reader gets
   it: its pages, headers and caching, the crawlers' 403 and redirects, the
   404 page, and the build's includes kept from readers.
 
 The site VM runs the example's real receiver too, against a repository on
 the VM with the example's content: it wants its token, refuses a post that
 would break the build, or that the site's pages can't take, with the
-build's own message, and commits and pushes one that wouldn't.
+build's own message, and commits and pushes one that wouldn't, which starts
+the deploy at once.
 
 ## What comes from where
 

@@ -10,8 +10,8 @@ small-press takes it.
 The receiver is the third way to run a site's program, in `micropub/`.
 It takes requests by that spec and turns each into a commit to the site's
 repository. It never builds or serves the site; the repository stays the
-only input, and the build stays reproducible. The host's deploy timer picks
-the commit up like any other, as [Deployment](architecture.md#deployment)
+only input, and the build stays reproducible. The host's deploy builds the
+commit at once (step 5), as [Deployment](architecture.md#deployment)
 describes.
 
 For each request, one at a time:

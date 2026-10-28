@@ -15,7 +15,8 @@ pages; everything but the pages is the library's
 | `web/` | Templates and static files, embedded with `embed.FS`. Everything in `web/static/` is published, each at an address with its hash (`asset "site.css"` in a template). |
 | `content/` | Posts and pages, in the [format](architecture.md#content) every site shares. |
 | `go.mod` | The library, at the commit the site builds with. |
-| `flake.nix`, `nix/` | `program` and `site`, which the deploy builds. |
+| `flake.nix`, `nix/` | `program` and `site`, which the deploy builds (`nix/package.nix`, `nix/site.nix`). |
+| `.gitignore` | `go.work` and `go.work.sum`, for working on the library and the site at once. |
 | `check.sh`, `.forgejo/` | The checks, as the library's. |
 
 The flake has two packages the module relies on: `site`, the built site,
@@ -25,21 +26,28 @@ site's pages, as the deploy will build it.
 
 ## Starting one
 
-1. Copy `example/` (the Go files, `web/` and `content/`) into a new
-   repository, and `flake.nix`, `nix/program.nix`, `nix/site.nix`,
-   `check.sh` and `.forgejo/` from this one, or from a site already
-   running.
+1. Copy `example/` (the Go files, `web/` and `content/`) into a new repository,
+   and `flake.nix`, `nix/package.nix`, `nix/site.nix`, `check.sh`,
+   `.forgejo/` and `.gitignore` from a site already running, such as
+   `codeberg.org/BW20/blog-jeltje`. Copied from this repository instead,
+   the flake loses the module, its VM test and `git` in the dev shell,
+   `dev` runs `go run . -serve … -dev-assets .`, `nix/program.nix` becomes
+   `nix/package.nix` without `git` for its tests, and `nix/site.nix` reads
+   `../content` rather than `../example/content`.
 2. `go mod init codeberg.org/<owner>/<site>`, change the import of `web` in
    `main.go` and `pages_test.go` to it, then
    `go get codeberg.org/BW20/small-press@main` and `go mod tidy`.
-3. In `nix/program.nix`: the program's name, its files (no `build/` or
-   `example/` here), and `vendorHash = lib.fakeHash`. `nix build .#program`
-   then says what the hash is.
+3. In `nix/package.nix`: the program's name, and `vendorHash =
+   lib.fakeHash`; `nix build .#program` then says what the hash is. In
+   `nix/site.nix`, the program's name.
 4. Change what you like: `content/site.toml` first, then `web/` and
    `pages.go`. `nix run .#dev` serves it while you do.
 5. Add the site to the host: `services.small-press.sites.<name>`, with its
-   domain, its repository, the program's name, and for the receiver a token
-   and a deploy key with write access to that repository only.
+   domain, its repository and the program's name, and its deploy's user,
+   `small-press-<name>`, in `nix.settings.allowed-users` (the module says so
+   when it isn't). For the receiver: a token, a deploy key with write access
+   to that repository only, the forge's `knownHosts`, the `pushUrl` and the
+   commits' `author`.
 
 A site whose pages are written by hand, not only posts from In the Open,
 lets CI check pushes that only change `content/` too: the receiver checks

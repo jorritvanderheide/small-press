@@ -3,8 +3,9 @@
 # deploy: two sites' deploys, each from its own repository on the VM.
 # Building a real site's flake there would need nixpkgs and Go without the
 # network, so the sites in it are a stand-in (test/) that writes what the
-# real build does: a first deploy, a commit that doesn't build, and one that
-# does again, and a second site beside the first.
+# real build does: a receiver that waits for the first deploy, a first
+# deploy, one with nothing new, a commit that doesn't build, one that does
+# again, and a second site beside the first.
 #
 # site: the example site, built here, as nginx serves it to a reader, and its
 # real receiver, which commits a post it takes to a repository on the VM.
