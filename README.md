@@ -1,4 +1,4 @@
-# small-press
+# <img src="images/logo.svg" width="48" align="absmiddle" /> small-press
 
 **A site from a folder of Markdown, written in Obsidian and built to be
 cited: a Go library, and a small program of each site's own on top of it.**

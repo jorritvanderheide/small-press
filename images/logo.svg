@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- A small hand press: its frame, the screw through the beam with its
+       handle, the platen it lowers, and the page on the bed under it, with
+       the printed lines cut out, so they show whatever is behind it. In the
+       example site's green, and its lighter one on a dark background. -->
+  <style>
+    .press { fill: #2e6b5a; }
+    @media (prefers-color-scheme: dark) { .press { fill: #84c7b2; } }
+  </style>
+  <mask id="lines">
+    <rect width="200" height="200" fill="#fff"/>
+    <rect x="76" y="106" width="34" height="8" rx="4"/>
+    <rect x="76" y="122" width="48" height="8" rx="4"/>
+    <rect x="76" y="138" width="40" height="8" rx="4"/>
+  </mask>
+  <g class="press">
+    <rect x="66" y="12" width="68" height="11" rx="5.5"/>
+    <rect x="94" y="23" width="12" height="49" rx="2"/>
+    <rect x="26" y="34" width="148" height="16" rx="4"/>
+    <rect x="34" y="50" width="12" height="114" rx="2"/>
+    <rect x="154" y="50" width="12" height="114" rx="2"/>
+    <rect x="60" y="72" width="80" height="14" rx="3"/>
+    <rect x="66" y="94" width="68" height="64" rx="3" mask="url(#lines)"/>
+    <rect x="20" y="164" width="160" height="16" rx="4"/>
+  </g>
+</svg>
