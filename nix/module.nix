@@ -203,8 +203,8 @@ let
       # Run as root after a deploy that built something: nginx reads the
       # build's includes again, the units in deploy.onSuccess start, and the
       # receiver runs the program just built, so it checks posts by the same
-      # rules as the build. The socket is started again in case it gave up
-      # before the first deploy, when there was no program to start.
+      # rules as the build. The socket is started, as it waits for the
+      # program before the first deploy.
       apply = pkgs.writeShellScript "${unit}-apply" (
         ''
           [ -e ${stateDir}/apply ] || exit 0
@@ -382,11 +382,16 @@ let
 
         # systemd owns the socket: only the proxy's group may open it, and the
         # proxy keeps its connection while the receiver restarts after a
-        # deploy.
+        # deploy. Both wait for the program the first deploy builds: a
+        # request before it would start a receiver with nothing to run, and
+        # a unit that fails while the host switches fails the switch. A
+        # condition that isn't met only skips the unit, and the deploy starts
+        # the socket once it has built the program.
         systemd.sockets.${receiverUser} = {
           description = "Receiver socket of ${s.domain}";
           wantedBy = [ "sockets.target" ];
           listenStreams = [ s.receiver.socket ];
+          unitConfig.ConditionPathExists = program;
           socketConfig = {
             SocketUser = receiverUser;
             SocketGroup = cfg.proxyGroup;
@@ -398,6 +403,7 @@ let
         # the receiver and the build can't disagree about what breaks the site.
         systemd.services.${receiverUser} = {
           description = "Receiver of ${s.domain}, which takes posts over Micropub";
+          unitConfig.ConditionPathExists = program;
           requires = [ "${receiverUser}.socket" ];
           wants = [ "network-online.target" ];
           after = [

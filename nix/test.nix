@@ -146,8 +146,14 @@ pkgs.testers.runNixOSTest {
 
     deploy.wait_for_unit("nginx.service")
 
-    with subtest("nginx starts before the first deploy"):
-        deploy.succeed("systemctl is-active small-press-blog-receiver.socket")
+    with subtest("nginx starts before the first deploy, and the receiver waits for it"):
+        # Neither the socket nor the receiver starts without a program, so a
+        # request before the first deploy fails no unit, and with it no
+        # switch of the host.
+        get(deploy, "/micropub")
+        for unit in ["small-press-blog-receiver.socket", "small-press-blog-receiver.service"]:
+            deploy.fail(f"systemctl is-active {unit}")
+            deploy.fail(f"systemctl is-failed {unit}")
 
     for name in ["blog", "other"]:
         deploy.succeed(
@@ -162,7 +168,8 @@ pkgs.testers.runNixOSTest {
         assert "first" in get(deploy, "/")
         deploy.wait_for_file("/tmp/deploy-published")
 
-    with subtest("the receiver's link"):
+    with subtest("the receiver's link, and its socket once there is a program"):
+        deploy.succeed("systemctl is-active small-press-blog-receiver.socket")
         assert 'rel="micropub"' in get(deploy, "/", "-D -", "-o /dev/null")
 
     with subtest("the build's includes"):

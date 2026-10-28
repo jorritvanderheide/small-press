@@ -79,7 +79,10 @@ the key reach it as systemd credentials, so they stay out of the Nix store.
 
 - **It runs the program the deploy built**, not one from the host's
   configuration, and restarts after each deploy. So its checks are the ones
-  the build that publishes the post will run.
+  the build that publishes the post will run. Before a site's first deploy
+  there is no program, so its socket and receiver wait for one: a request
+  gets nginx's `502`, and no unit fails, which would fail the host's
+  switch.
 - **It runs as its own user**, not the deploy's, so the commits the host
   builds can't read its key.
 - **nginx passes `/micropub` to it**, over a socket only nginx may open, and

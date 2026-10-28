@@ -20,3 +20,5 @@ and the commit is the version.
   repository, with its own users, deploy and receiver:
   `services.small-press.sites.<name>`.
 - `example/`, a whole site to start a new one from.
+- A new site's receiver waits for its first deploy, instead of failing the
+  host's switch when a request comes before there is a program to run.
