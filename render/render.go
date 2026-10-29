@@ -1,8 +1,8 @@
 // Package render turns Markdown into HTML: CommonMark with GFM tables,
-// strikethrough and footnotes. It also reads what a text links to, for the
-// checks and backlinks in package site, and says where a text breaks the
-// rules a page keeps: links that are safe, images with alt text, a heading
-// order that holds, and no raw HTML.
+// strikethrough, footnotes and task lists. It also reads what a text links
+// to, for the checks and backlinks in package site, and says where a text
+// breaks the rules a page keeps: links that are safe, images with alt text,
+// a heading order that holds, and no raw HTML.
 package render
 
 import (
@@ -28,6 +28,8 @@ var markdown = goldmark.New(
 		extension.NewTable(extension.WithTableCellAlignMethod(extension.TableCellAlignAttribute)),
 		extension.Strikethrough,
 		extension.Footnote,
+		// A task's box, ticked or not, is a disabled checkbox: a reader can't tick it.
+		extension.TaskList,
 	),
 	// Every heading an id made from its words, so a section can be linked to
 	// and cited.

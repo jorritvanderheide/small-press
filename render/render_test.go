@@ -38,6 +38,12 @@ func TestHTML(t *testing.T) {
 			want: []string{`<sup id="fnref:1">`, "Its source."},
 		},
 		{
+			name: "task list",
+			src:  "- [ ] open\n- [x] done",
+			want: []string{`<li><input disabled="" type="checkbox"> open</li>`, `<li><input checked="" disabled="" type="checkbox"> done</li>`},
+			not:  []string{"[ ]", "[x]"},
+		},
+		{
 			name: "raw HTML stays out",
 			src:  "<script>alert(1)</script>\n\nText <b>bold</b>.",
 			want: []string{"Text"},

@@ -145,8 +145,9 @@ everywhere.
 
 ### The body
 
-CommonMark with GFM tables, strikethrough and footnotes. Two kinds of link
-have a meaning of their own:
+CommonMark with GFM tables, strikethrough, footnotes and task lists, a
+task's box a checkbox no reader can tick. Two kinds of link have a meaning
+of their own:
 
 - **A link to another post**, `/log/<slug>/`, is an ordinary link. The site
   reads every such link to build backlinks, so there is nothing to keep in
