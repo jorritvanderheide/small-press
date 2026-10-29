@@ -16,7 +16,9 @@ import (
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/text"
+	"github.com/yuin/goldmark/util"
 )
 
 var markdown = goldmark.New(
@@ -30,6 +32,8 @@ var markdown = goldmark.New(
 	// Every heading an id made from its words, so a section can be linked to
 	// and cited.
 	goldmark.WithParserOptions(parser.WithAutoHeadingID()),
+	// An image with a caption as a <figure> (figure.go).
+	goldmark.WithRendererOptions(renderer.WithNodeRenderers(util.Prioritized(figureRenderer{}, 500))),
 )
 
 // A Doc is a Markdown text, parsed.
@@ -162,6 +166,7 @@ func (d *Doc) HTML(o Options) (template.HTML, error) {
 		}
 		return ast.WalkContinue, nil
 	})
+	figures(root)
 	var buf bytes.Buffer
 	if err := markdown.Renderer().Render(&buf, d.src, root); err != nil {
 		return "", err

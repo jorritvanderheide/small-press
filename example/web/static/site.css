@@ -142,6 +142,16 @@ img {
   mix-blend-mode: multiply;
 }
 
+/* An image with its caption under it. */
+figure {
+  margin: 1.5rem 0;
+}
+
+figcaption {
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
 @media (prefers-color-scheme: dark) {
   img {
     mix-blend-mode: normal;
@@ -293,6 +303,7 @@ footer.site {
   }
 
   img,
+  figure,
   pre,
   table,
   blockquote,

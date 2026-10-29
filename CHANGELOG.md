@@ -5,11 +5,14 @@ version, which a site pins in its `go.mod`; changes collect under Unreleased
 until the next one. Before 1.0.0 there is no stable API: a release may break
 a site's pages, and says so here.
 
-## Unreleased
+## 0.1.2
 
 - A reference's plain text keeps an address written as an autolink, as a
   style writes a DOI: the tooltip on a citation, the `citation_reference`
   tags and a work page's title lost it, leaving ". .".
+- An image with a caption, the italics in the paragraph after it or on
+  the line under it, is a `<figure>` with a `<figcaption>`. A site styles
+  `figure` and `figcaption`; the example does.
 
 ## 0.1.1
 

@@ -192,3 +192,36 @@ func TestHeadings(t *testing.T) {
 		t.Errorf("no id in\n%s", html)
 	}
 }
+
+func TestFigure(t *testing.T) {
+	figure := "<figure>\n<img src=\"bed.png\" alt=\"A bed\">\n<figcaption>A raised bed, <a href=\"https://example.org/\">in May</a>.</figcaption>\n</figure>\n"
+	for _, src := range []string{
+		"![A bed](bed.png)\n\n*A raised bed, [in May](https://example.org/).*", // as In the Open sends it
+		"![A bed](bed.png)  \n*A raised bed, [in May](https://example.org/).*", // on the next line
+		"![A bed](bed.png)\n_A raised bed, [in May](https://example.org/)._",
+	} {
+		got, err := Parse([]byte(src)).HTML(Options{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if string(got) != figure {
+			t.Errorf("HTML(%q) =\n%s\nwant\n%s", src, got, figure)
+		}
+	}
+	// Only an image, without italics that are all of the paragraph under it.
+	for _, src := range []string{
+		"![A bed](bed.png)",
+		"![A bed](bed.png)\n\n*Italics* and words.",
+		"![A bed](bed.png)\n\n**Bold.**",
+		"![A bed](bed.png) and *words*.",
+		"Words.\n*Italics.*",
+	} {
+		got, err := Parse([]byte(src)).HTML(Options{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if strings.Contains(string(got), "<figure>") {
+			t.Errorf("HTML(%q) = %s, want no figure", src, got)
+		}
+	}
+}

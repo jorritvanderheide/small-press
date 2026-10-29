@@ -165,7 +165,12 @@ Every other link is just a link. Further reading, a web page that isn't
 cited, goes in the body as a list of links under its own heading:
 `references` is only for works the post cites.
 
-Images are Markdown images of files in the post's folder.
+Images are Markdown images of files in the post's folder. An image in a
+paragraph of its own, followed by a paragraph that is all italics, is a
+figure, the italics its caption, as In the Open sends it; so is an image
+with the italics on the line right under it, as Obsidian shows it. A
+figure is written as a `<figure>` with a `<figcaption>`. An image without
+such italics is only an image: its alt text is not a caption.
 
 ## Pages and files
 
