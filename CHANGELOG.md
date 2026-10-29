@@ -5,6 +5,13 @@ version, which a site pins in its `go.mod`; changes collect under Unreleased
 until the next one. Before 1.0.0 there is no stable API: a release may break
 a site's pages, and says so here.
 
+## 0.1.3
+
+- A site may have scripts of its own, files in its `web/static/`, for what
+  only adds to a page: nginx's policy now has `script-src 'self'`. Pages
+  still need no JavaScript, and no inline script or another site's runs.
+  It reaches a host when its small-press input is updated.
+
 ## 0.1.2
 
 - A reference's plain text keeps an address written as an autolink, as a

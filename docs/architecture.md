@@ -9,10 +9,10 @@ its own pages, templates and stylesheet. [Publishing](publishing.md)
 describes the receiver that takes posts, and [Sites](sites.md) how a site's
 program is made.
 
-A site has no server program and no JavaScript. A blog only changes when
-something is published, so everything a request could need is decided at
-build time. The receiver is the one program that runs, and all it does is
-turn a published post into a commit.
+A site has no server program, and its pages need no JavaScript. A blog
+only changes when something is published, so everything a request could
+need is decided at build time. The receiver is the one program that runs,
+and all it does is turn a published post into a commit.
 
 ## Where things live
 
@@ -283,10 +283,15 @@ the same commit gives the same site.
 
 ## Rules
 
-- **No JavaScript.** Folding is `<details>`, dark mode is
-  `prefers-color-scheme`, and nginx's policy (`default-src 'none'`) makes it
-  stick. The one `<script>` is a post's JSON-LD, which is data: no browser
-  runs it.
+- **No JavaScript needed.** Every page works without it: folding is
+  `<details>`, dark mode is `prefers-color-scheme`. A site may add a script
+  of its own, a file in its `web/static/`, for what only adds to a page,
+  such as a button that copies a citation that can be selected by hand
+  too. nginx's policy (`default-src 'none'; script-src 'self'`) runs those
+  files and nothing else: no inline script, and nothing from another site.
+  A post can't add a script, as raw HTML stays off and an upload is only
+  ever a PNG or a JPEG. The one `<script>` in a page is a post's JSON-LD,
+  which is data: no browser runs it.
 - **A broken site does not build.** A link to a post that does not exist, a
   citation without a reference, a reference never cited, a reference with no
   work in `content/works/`, a thread whose name isn't a name, a link to a
@@ -380,7 +385,8 @@ the site's `program` option.
 **nginx** serves each site's build at its `domain`, with BW20's old site's
 rules:
 
-- Security headers, with a content security policy that allows no scripts.
+- Security headers, with a content security policy that runs only the
+  site's own script files, never inline script or another site's.
 - AI crawlers kept out twice: in `robots.txt`, and with a 403 for the same
   user agents, read from one list (`build/crawlers.txt`).
 - Aliases as permanent redirects.
@@ -418,9 +424,9 @@ the deploy at once.
 
 ## What comes from where
 
-- **From BW20's old site:** no JavaScript, dates as seasons, dithered images,
-  the build number, bot blocking, the hardened nginx module and its VM test,
-  threads.
+- **From BW20's old site:** no JavaScript needed, dates as seasons,
+  dithered images, the build number, bot blocking, the hardened nginx
+  module and its VM test, threads.
 - **From MeetINN:** `html/template` with `embed.FS` and templates from disk
   in development, hashed asset URLs, rendering into memory first, goldmark
   with passes over the syntax tree, safe links, the dithering, `check.sh` for

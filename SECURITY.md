@@ -21,9 +21,11 @@ key. Reports are looked at before anything about them is made public.
 
 ## What counts
 
-A site has no JavaScript and no server program for visitors: nginx serves
-what the build wrote, with a content security policy that allows no
-scripts. The one program that runs is the receiver, which only nginx can
+A site's pages need no JavaScript, and there is no server program for
+visitors: nginx serves what the build wrote, with a content security
+policy that runs only script files from the site's own `web/static/`,
+never inline script or another site's. The one program that runs is the
+receiver, which only nginx can
 reach, which wants the site's token, and which only commits to the site's
 repository; see [Publishing](docs/publishing.md). Each site's deploy and
 receiver run as users of their own; see

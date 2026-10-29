@@ -231,7 +231,7 @@ pkgs.testers.runNixOSTest {
 
     with subtest("the example site's headers"):
         headers = page("/about/", "-D -", "-o /dev/null")
-        assert "default-src 'none'" in headers, headers
+        assert "default-src 'none'; script-src 'self';" in headers, headers
         assert "X-Content-Type-Options: nosniff" in headers, headers
         assert "Cache-Control: no-cache" in headers, headers
         assert "micropub" not in headers, headers
