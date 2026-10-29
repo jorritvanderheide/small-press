@@ -170,7 +170,7 @@ func TestHTMLLink(t *testing.T) {
 func TestHeadings(t *testing.T) {
 	doc := Parse([]byte("## The method\n\nText.\n\n## The method\n\n### What *we* found"))
 	got := doc.Headings()
-	want := []Heading{{"The method", "the-method"}, {"The method", "the-method-1"}, {"What we found", "what-we-found"}}
+	want := []Heading{{"The method", "the-method", 2}, {"The method", "the-method-1", 2}, {"What we found", "what-we-found", 3}}
 	if len(got) != len(want) {
 		t.Fatalf("Headings = %+v", got)
 	}

@@ -5,6 +5,12 @@ version, which a site pins in its `go.mod`; changes collect under Unreleased
 until the next one. Before 1.0.0 there is no stable API: a release may break
 a site's pages, and says so here.
 
+## 0.1.1
+
+- `render.Heading` has the heading's `Level`, 2 for `##`, so a site can
+  build a table of contents from `Doc.Headings`. A `Heading` written
+  without field names no longer compiles.
+
 ## 0.1.0
 
 - The BW20 blog's program, as a library: each site is a program of its

@@ -209,11 +209,12 @@ func Plain(src string) string {
 	return strings.TrimSpace(words(d.root, d.src))
 }
 
-// A Heading is a heading in a text: its words, and the id it is written
-// with.
+// A Heading is a heading in a text: its words, the id it is written with,
+// and its level, 2 for ##, as a site's table of contents needs.
 type Heading struct {
 	Words string
 	ID    string
+	Level int
 }
 
 // Headings lists the text's headings, in order.
@@ -223,7 +224,7 @@ func (d *Doc) Headings() []Heading {
 		if h, ok := n.(*ast.Heading); ok && entering {
 			id, _ := h.AttributeString("id")
 			value, _ := id.([]byte)
-			headings = append(headings, Heading{Words: words(h, d.src), ID: string(value)})
+			headings = append(headings, Heading{Words: words(h, d.src), ID: string(value), Level: h.Level})
 		}
 		return ast.WalkContinue, nil
 	})
