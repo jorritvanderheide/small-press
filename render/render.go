@@ -196,6 +196,9 @@ func words(n ast.Node, src []byte) string {
 				}
 			case *ast.String:
 				b.Write(c.Value)
+			case *ast.AutoLink:
+				// Its address is its words, and it has no Text inside.
+				b.Write(c.Label(src))
 			}
 		}
 		return ast.WalkContinue, nil

@@ -151,6 +151,11 @@ func TestPlain(t *testing.T) {
 	if want := "Marsh, Ann. 2020. Archives and Their Readers. Brill."; got != want {
 		t.Errorf("Plain = %q, want %q", got, want)
 	}
+	// A DOI written as an autolink, as a reference style does, keeps it.
+	got = Plain("Hoepman, Jaap-Henk. 2025. “Authenticity.” 5 (4). <https://doi.org/10.34669/WI.WJDS/5.4.3>.")
+	if want := "Hoepman, Jaap-Henk. 2025. “Authenticity.” 5 (4). https://doi.org/10.34669/WI.WJDS/5.4.3."; got != want {
+		t.Errorf("Plain = %q, want %q", got, want)
+	}
 }
 
 func TestHTMLLink(t *testing.T) {
